@@ -1,0 +1,38 @@
+CROSS SECTION FACTORS
+ HxW    H      W     factor length
+ 2x4 1.50in  3.50in   0.48  3.86ft
+ 2x6 1.50in  5.50in   0.76  6.07ft
+ 2x8 1.50in  7.25in   1.00  8.00ft
+2x10 1.50in  9.25in   1.28 10.21ft
+2x12 1.50in 11.25in   1.55 12.41ft
+ 4x4 3.50in  3.50in   0.64  5.12ft
+ 4x6 3.50in  5.50in   1.01  8.05ft
+ 4x8 3.50in  7.25in   1.33 10.61ft
+4x10 3.50in  9.25in   1.69 13.54ft
+4x12 3.50in 11.25in   2.06 16.47ft
+ 6x4 5.50in  3.50in   0.74  5.96ft
+ 6x6 5.50in  5.50in   1.17  9.36ft
+ 6x8 5.50in  7.25in   1.54 12.34ft
+6x10 5.50in  9.25in   1.97 15.74ft
+6x12 5.50in 11.25in   2.39 19.14ft
+ 8x4 7.25in  3.50in   0.82  6.53ft
+ 8x6 7.25in  5.50in   1.28 10.26ft
+ 8x8 7.25in  7.25in   1.69 13.53ft
+8x10 7.25in  9.25in   2.16 17.26ft
+8x12 7.25in 11.25in   2.62 20.99ft
+
+NUMBER OF STRINGERS (N) FACTORS
+ N factor  length
+ 2  1.00   8.00ft
+ 3  1.14   9.16ft
+ 4  1.26  10.08ft
+ 5  1.36  10.86ft
+ 6  1.44  11.54ft
+ 7  1.52  12.15ft
+ 8  1.59  12.70ft
+
+MODULUS OF ELASTICITY FACTORS
+       type        E  factor  length
+     No 1 Dense 1800000  1.04   8.32ft
+           No 1 1600000  1.00   8.00ft
+ No 1 Non-Dense 1400000  0.96   7.65ft
