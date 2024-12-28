@@ -30,6 +30,9 @@ NUMBER OF STRINGERS (N) FACTORS
  6  1.44  11.54ft
  7  1.52  12.15ft
  8  1.59  12.70ft
+16  2.00  16.00ft
+24  2.29  18.32ft
+32  2.52  20.16ft
 
 MODULUS OF ELASTICITY FACTORS
        type        E  factor  length
