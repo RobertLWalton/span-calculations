@@ -39,3 +39,10 @@ MODULUS OF ELASTICITY FACTORS
      No 1 Dense 1800000  1.04   8.32ft
            No 1 1600000  1.00   8.00ft
  No 1 Non-Dense 1400000  0.96   7.65ft
+
+TREAD WIDTH FACTORS
+width   factor  length
+24in  1.14   9.16ft
+36in  1.00   8.00ft
+44in  0.94   7.48ft
+48in  0.91   7.27ft
