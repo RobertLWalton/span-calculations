@@ -4,7 +4,7 @@
 #
 # File:         span.py
 # Authors:      Bob Walton (walton@acm.org)
-# Date:         Sat Dec 28 04:59:08 AM EST 2024
+# Date:         Sat Dec 28 07:00:30 AM EST 2024
 #
 # The authors have placed this program in the public
 # domain; they make no warranty and accept no liability
@@ -32,6 +32,7 @@ H = 7.25 # actual cross-section height
 L = 8 # length in feet
 N = 2 # number of stringers
 E = 1600000 # No 1 Modulus of Elasticity
+WIDTH = 36 # tread width
 
 # Cross-section catalog
 #
@@ -68,6 +69,8 @@ reference = [
     [ "No 1 Non-Dense", 1400000 ]
 ]
 
+widths = [ 24, 36, 44, 48 ]
+
 
 # Main Program
 
@@ -101,3 +104,12 @@ for r in reference:
     l = f * L
     print ( "{0} {1:7d} {2:5.2f}  {3:5.2f}ft"
             .format ( type.rjust(15), e, f, l ) )
+
+print ( "" )
+print ( "TREAD WIDTH FACTORS" )
+print ( "width   factor  length" )
+for width in widths:
+    f = ( WIDTH / width ) ** ( 1.0 / 3.0 )
+    l = f * L
+    print ( "{0:2d}in {1:5.2f}  {2:5.2f}ft"
+            .format ( width, f, l ) )
