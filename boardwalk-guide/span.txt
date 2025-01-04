@@ -1,5 +1,45 @@
+
+Method:
+
+Hold deflection/span and weight per square foot constant
+and compute how the span changes when the boardwalk
+section parameters change relative to the reference
+boardwalk section.
+
+For each parameter that is changed, the span is
+multiplied by a factor dependent on the changed
+parameter value.  Multiple parameter changes produce
+multiple factors that are multiplied together before
+multiplying by the reference section span.
+
+According to the NDS equations for joists, for fixed
+weight per square foot:
+
+    deflection/span is directly proportional to:
+        the cube of the span
+        and
+        the length of the tread
+    and inversely proportional to:
+        the actual width of the stringer
+        and
+        the cube of the actual height of the stringer
+        and
+        the number of stringers
+        and
+        the elastic modulus of the wood
+
+
+Reference Section Values:
+
+span = 8ft
+cross section = 2x8, actual 1.50in x 7.25in
+number of stringers = 2
+tread length = 36in
+elastic modulus = 1600000 for No 1 Standard
+
+
 CROSS SECTION FACTORS
- HxW    H      W     factor length
+ WxH    H      W     factor length
  2x4 1.50in  3.50in   0.48  3.86ft
  2x6 1.50in  5.50in   0.76  6.07ft
  2x8 1.50in  7.25in   1.00  8.00ft
@@ -30,6 +70,10 @@ NUMBER OF STRINGERS (N) FACTORS
  6  1.44  11.54ft
  7  1.52  12.15ft
  8  1.59  12.70ft
+ 9  1.65  13.21ft
+10  1.71  13.68ft
+11  1.77  14.12ft
+12  1.82  14.54ft
 16  2.00  16.00ft
 24  2.29  18.32ft
 32  2.52  20.16ft

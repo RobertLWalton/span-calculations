@@ -4,7 +4,7 @@
 #
 # File:         span.py
 # Authors:      Bob Walton (walton@acm.org)
-# Date:         Sat Dec 28 07:00:30 AM EST 2024
+# Date:         Sat Jan  4 06:02:08 PM EST 2025
 #
 # The authors have placed this program in the public
 # domain; they make no warranty and accept no liability
@@ -21,18 +21,70 @@ stringer numbers, cross-sections, and wood quality.
 Command: python3 span.py
 
 """;
+
+if len ( sys.argv ) > 1:
+    print ( document )
+    exit ( 1 )
+
+method = """
+Method:
+
+Hold deflection/span and weight per square foot constant
+and compute how the span changes when the boardwalk
+section parameters change relative to the reference
+boardwalk section.
+
+For each parameter that is changed, the span is
+multiplied by a factor dependent on the changed
+parameter value.  Multiple parameter changes produce
+multiple factors that are multiplied together before
+multiplying by the reference section span.
+
+According to the NDS equations for joists, for fixed
+weight per square foot:
+
+    deflection/span is directly proportional to:
+        the cube of the span
+        and
+        the length of the tread
+    and inversely proportional to:
+        the actual width of the stringer
+        and
+        the cube of the actual height of the stringer
+        and
+        the number of stringers
+        and
+        the elastic modulus of the wood
+"""
+print ( method )
 
 # Data
 
-# Reference Values
+
+
+# Reference Section Values
 #
 WxH = "2x8" # cross-section dimension
 W = 1.5 # actual cross-section width
 H = 7.25 # actual cross-section height
 L = 8 # length in feet
 N = 2 # number of stringers
+WOOD = "No 1 Standard"
 E = 1600000 # No 1 Modulus of Elasticity
-WIDTH = 36 # tread width
+WIDTH = 36 # tread length
+
+reference = """
+Reference Section Values:
+
+span = {}ft
+cross section = {}, actual {:.2f}in x {:.2f}in
+number of stringers = {}
+tread length = {}in
+elastic modulus = {} for {}
+
+"""
+print ( reference.format
+          ( L, WxH, W, H, N, WIDTH, E, WOOD ) )
 
 # Cross-section catalog
 #
@@ -61,7 +113,8 @@ cross = [
     [ "8x12", 7.25, 11.25 ]
 ]
 
-stringers = [ 2, 3, 4, 5, 6, 7, 8, 16, 24, 32 ]
+stringers = [ 2, 3, 4, 5, 6, 7, 8, 9,
+              10, 11, 12, 16, 24, 32 ]
 
 reference = [
     [ "No 1 Dense", 1800000 ],
@@ -75,7 +128,7 @@ widths = [ 24, 36, 44, 48 ]
 # Main Program
 
 print ( "CROSS SECTION FACTORS" )
-print ( " HxW    H      W     factor length" )
+print ( " WxH    H      W     factor length" )
 for c in cross:
     wxh = c[0]
     w = c[1]
