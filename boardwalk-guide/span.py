@@ -4,7 +4,7 @@
 #
 # File:         span.py
 # Authors:      Bob Walton (walton@acm.org)
-# Date:         Sat Jan  4 06:02:08 PM EST 2025
+# Date:         Tue Jan  7 12:52:52 PM EST 2025
 #
 # The authors have placed this program in the public
 # domain; they make no warranty and accept no liability
@@ -27,18 +27,18 @@ if len ( sys.argv ) > 1:
     exit ( 1 )
 
 method = """
-Method:
+SPAN LENGTH BY STANDARD NDS METHOD
+---- ------ -- -------- --- ------
 
-Hold deflection/span and weight per square foot constant
-and compute how the span changes when the boardwalk
-section parameters change relative to the reference
-boardwalk section.
+The standard NDS joist check limits the deflection/span
+for a given weight per square foot.
 
-For each parameter that is changed, the span is
-multiplied by a factor dependent on the changed
-parameter value.  Multiple parameter changes produce
-multiple factors that are multiplied together before
-multiplying by the reference section span.
+Given this, our procedure here is:
+
+    Hold deflection/span and weight per square foot
+    constant and compute how the span changes when the
+    boardwalk section parameters change relative to the
+    reference boardwalk section.
 
 According to the NDS equations for joists, for fixed
 weight per square foot:
@@ -55,6 +55,16 @@ weight per square foot:
         the number of stringers
         and
         the elastic modulus of the wood
+
+For symplicity of output, we set:
+
+H = effective height of stringers
+  = actual height of a stringer if NOT truss
+  = sum of actual heights of `stringers' if truss
+
+W = sum of actual widths of stringers
+    times reference tread length / tread length
+    times elastic modulus / reference elastic modulue
 """
 print ( method )
 
@@ -81,40 +91,14 @@ cross section = {}, actual {:.2f}in x {:.2f}in
 number of stringers = {}
 tread length = {}in
 elastic modulus = {} for {}
+W = {}
+H = {}
 
 """
 print ( reference.format
-          ( L, WxH, W, H, N, WIDTH, E, WOOD ) )
+          ( L, WxH, W, H, N, WIDTH, E, WOOD,
+            N*W, H ) )
 
-# Cross-section catalog
-#
-# ["wxh", w, h]
-#
-cross = [
-    [ "2x4", 1.5, 3.5 ],
-    [ "2x6", 1.5, 5.5 ],
-    [ "2x8", 1.5, 7.25 ],
-    [ "2x10", 1.5, 9.25 ],
-    [ "2x12", 1.5, 11.25 ],
-    [ "4x4", 3.5, 3.5 ],
-    [ "4x6", 3.5, 5.5 ],
-    [ "4x8", 3.5, 7.25 ],
-    [ "4x10", 3.5, 9.25 ],
-    [ "4x12", 3.5, 11.25 ],
-    [ "6x4", 5.5, 3.5 ],
-    [ "6x6", 5.5, 5.5 ],
-    [ "6x8", 5.5, 7.25 ],
-    [ "6x10", 5.5, 9.25 ],
-    [ "6x12", 5.5, 11.25 ],
-    [ "8x4", 7.25, 3.5 ],
-    [ "8x6", 7.25, 5.5 ],
-    [ "8x8", 7.25, 7.25 ],
-    [ "8x10", 7.25, 9.25 ],
-    [ "8x12", 7.25, 11.25 ]
-]
-
-stringers = [ 2, 3, 4, 5, 6, 7, 8, 9,
-              10, 11, 12, 16, 24, 32 ]
 
 reference = [
     [ "No 1 Dense", 1800000 ],
@@ -127,42 +111,37 @@ widths = [ 24, 36, 44, 48 ]
 
 # Main Program
 
-print ( "CROSS SECTION FACTORS" )
-print ( " WxH    H      W     factor length" )
-for c in cross:
-    wxh = c[0]
-    w = c[1]
-    h =  c[2]
-    f = ( ( w / W ) * ( h / H ) ** 3 ) ** (1.0 / 3.0 )
-    l = f * L
-    print ( "{0} {1:4.2f}in {2:5.2f}in {3:6.2f} {4:5.2f}ft"
-            .format ( wxh.rjust(4), w, h, f, l ) )
+print ( '                          SPAN LENGTH IN FEET' )
+print ( '                                   W' )
+print ( '   H  ', end='' )
+for wx in range ( 10 ):
+    w = 3.0 + 0.5 * wx
+    print ( "{:6.2f}".format ( w ), end='' )
+print ()
+for hx in range ( 40 ):
+    h = 3.0 + 0.5 * hx
+    print ( "{:6.2f}".format ( h ), end='' )
+    for wx in range ( 10 ):
+        w = 3.0 + 0.5 * wx
+        f = ( ( w / W ) * ( h / H ) ** 3 ) ** (1.0 / 3.0 )
+        l = f * L
+        print ( "{:6.2f}".format ( l ), end='' )
+    print ();
+print ();
 
-print ( "" )
-print ( "NUMBER OF STRINGERS (N) FACTORS" )
-print ( " N factor  length" )
-for n in stringers:
-    f = ( n / N ) ** ( 1.0 / 3.0 )
-    l = f * L
-    print ( "{0:2d} {1:5.2f}  {2:5.2f}ft"
-            .format ( n, f, l ) )
-
-print ( "" )
-print ( "MODULUS OF ELASTICITY FACTORS" )
-print ( "       type        E  factor  length" )
-for r in reference:
-    type = r[0]
-    e = r[1]
-    f = ( float( e ) / E ) ** ( 1.0 / 3.0 )
-    l = f * L
-    print ( "{0} {1:7d} {2:5.2f}  {3:5.2f}ft"
-            .format ( type.rjust(15), e, f, l ) )
-
-print ( "" )
-print ( "TREAD WIDTH FACTORS" )
-print ( "width   factor  length" )
-for width in widths:
-    f = ( WIDTH / width ) ** ( 1.0 / 3.0 )
-    l = f * L
-    print ( "{0:2d}in {1:5.2f}  {2:5.2f}ft"
-            .format ( width, f, l ) )
+print ( '                          SPAN LENGTH IN FEET' )
+print ( '                                   W' )
+print ( '   H  ', end='' )
+for wx in range ( 10 ):
+    w = 8.0 + 0.5 * wx
+    print ( "{:6.2f}".format ( w ), end='' )
+print ()
+for hx in range ( 40 ):
+    h = 3.0 + 0.5 * hx
+    print ( "{:6.2f}".format ( h ), end='' )
+    for wx in range ( 10 ):
+        w = 3.0 + 0.5 * wx
+        f = ( ( w / W ) * ( h / H ) ** 3 ) ** (1.0 / 3.0 )
+        l = f * L
+        print ( "{:6.2f}".format ( l ), end='' )
+    print ();
