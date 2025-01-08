@@ -55,7 +55,7 @@ weight per square foot:
         the number of stringers
         and
         the elastic modulus of the wood
-
+\f
 For symplicity of output, we set:
 
 H = effective height of stringers
@@ -63,8 +63,8 @@ H = effective height of stringers
   = sum of actual heights of `stringers' if truss
 
 W = sum of actual widths of stringers
-    times reference tread length / tread length
-    times elastic modulus / reference elastic modulue
+    (typically number of stringers times actual
+     width of one stringer)
 """
 print ( method )
 
@@ -81,7 +81,7 @@ L = 8 # length in feet
 N = 2 # number of stringers
 WOOD = "No 1 Standard"
 E = 1600000 # No 1 Modulus of Elasticity
-WIDTH = 36 # tread length
+LENGTH = 36 # tread length
 
 reference = """
 Reference Section Values:
@@ -96,7 +96,7 @@ H = {}
 
 """
 print ( reference.format
-          ( L, WxH, W, H, N, WIDTH, E, WOOD,
+          ( L, WxH, W, H, N, LENGTH, E, WOOD,
             N*W, H ) )
 
 
@@ -106,42 +106,69 @@ reference = [
     [ "No 1 Non-Dense", 1400000 ]
 ]
 
-widths = [ 24, 36, 44, 48 ]
+tread_lengths = [ 24, 36, 44, 48 ]
 
+stringer_heights = [ 5.5, 7.25, 9.25, 11.25 ]
+
+effective_widths = [ 3.0, 3.5, 4.0, 4.5, 5.0, 5.5, 6.0, 6.5, 7.0, 7.5,
+                     8.0, 16.0, 24.0, 36.0, 42.0, 48.0 ]
+
+truss_heights = [ 11.0, 12.75, 14.5, 14.75, 16.5, 16.75, 18.5, 20.5, 22.5 ]
+
+truss_effective_widths = [ 3.0, 6.0, 7.0, 10.0, 14.0 ]
+
+W = N*W
 
 # Main Program
 
-print ( '                          SPAN LENGTH IN FEET' )
-print ( '                                   W' )
-print ( '   H  ', end='' )
-for wx in range ( 10 ):
-    w = 3.0 + 0.5 * wx
-    print ( "{:6.2f}".format ( w ), end='' )
-print ()
-for hx in range ( 40 ):
-    h = 3.0 + 0.5 * hx
+print ( "\f" )
+print ( '       NON-TRUSS SPAN LENGTH IN FEET' )
+print ( '                     H' )
+print ( '   W   |', end='' )
+for h in stringer_heights:
     print ( "{:6.2f}".format ( h ), end='' )
-    for wx in range ( 10 ):
-        w = 3.0 + 0.5 * wx
-        f = ( ( w / W ) * ( h / H ) ** 3 ) ** (1.0 / 3.0 )
+print ()
+print ( '-------+------------------------' )
+for w in effective_widths:
+    print ( "{:6.2f} |".format ( w ), end='' )
+    for h in stringer_heights:
+        f =  ( ( w / W ) * ( h / H ) ** 3 ) \
+          ** (1.0 / 3.0 )
         l = f * L
         print ( "{:6.2f}".format ( l ), end='' )
     print ();
 print ();
 
-print ( '                          SPAN LENGTH IN FEET' )
-print ( '                                   W' )
-print ( '   H  ', end='' )
-for wx in range ( 10 ):
-    w = 8.0 + 0.5 * wx
+print ( '         TRUSS SPAN LENGTH IN FEET' )
+print ( '                    W' )
+print ( '   H   |', end='' )
+for w in truss_effective_widths:
     print ( "{:6.2f}".format ( w ), end='' )
 print ()
-for hx in range ( 40 ):
-    h = 3.0 + 0.5 * hx
-    print ( "{:6.2f}".format ( h ), end='' )
-    for wx in range ( 10 ):
-        w = 3.0 + 0.5 * wx
-        f = ( ( w / W ) * ( h / H ) ** 3 ) ** (1.0 / 3.0 )
+print ( '-------+------------------------------' )
+for h in truss_heights:
+    print ( "{:6.2f} |".format ( h ), end='' )
+    for w in truss_effective_widths:
+        f =  ( ( w / W ) * ( h / H ) ** 3 ) \
+          ** (1.0 / 3.0 )
         l = f * L
         print ( "{:6.2f}".format ( l ), end='' )
     print ();
+
+print ( "\f")
+print ( "MODULUS OF ELASTICITY SPAN LENGTH MULTIPLIER" )
+print ( "       type          E      multiplier" )
+for r in reference:
+    type = r[0]
+    e = r[1]
+    m = ( float( e ) / E ) ** ( 1.0 / 3.0 )
+    print ( "{0}   {1:7d}     {2:5.2f}"
+            .format ( type.rjust(15), e, m ) )
+
+print ()
+print ( "TREAD LENGTH SPAN LENGTH MULTIPLIER" )
+print ( "length   muliplier" )
+for length in tread_lengths:
+    m = ( LENGTH / length ) ** ( 1.0 / 3.0 )
+    print ( " {0:2d}in     {1:5.2f}"
+            .format ( length, m ) )
