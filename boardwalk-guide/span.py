@@ -4,7 +4,7 @@
 #
 # File:         span.py
 # Authors:      Bob Walton (walton@acm.org)
-# Date:         Wed Jan  8 12:46:07 AM EST 2025
+# Date:         Wed Jan  8 01:43:47 AM EST 2025
 #
 # The authors have placed this program in the public
 # domain; they make no warranty and accept no liability
@@ -56,7 +56,7 @@ weight per square foot:
         and
         the elastic modulus of the wood
 \f
-For symplicity of output, we set:
+For simplicity of output, we set:
 
 H = effective height of stringers
   = actual height of a stringer if NOT truss
@@ -108,12 +108,14 @@ reference = [
 
 tread_lengths = [ 24, 36, 44, 48 ]
 
-stringer_heights = [ 5.5, 7.25, 9.25, 11.25 ]
+stringer_heights = [ 3.5, 5.5, 7.25, 9.25, 11.25 ]
 
-effective_widths = [ 3.0, 3.5, 4.0, 4.5, 5.0, 5.5, 6.0, 6.5, 7.0, 7.5,
-                     8.0, 8.5, 9.0, 16.0, 24.0, 36.0, 42.0, 48.0 ]
+effective_widths = [ 3.0, 3.5, 4.0, 4.5, 5.0, 5.5,
+                     6.0, 6.5, 7.0, 7.5, 8.0, 8.5,
+                     9.0, 16.0, 24.0, 36.0, 42.0, 48.0 ]
 
-truss_heights = [ 11.0, 12.75, 14.5, 14.75, 16.5, 16.75, 18.5, 20.5, 22.5 ]
+truss_heights = [ 11.0, 12.75, 14.5, 14.75,
+                  16.5, 16.75, 18.5, 20.5, 22.5 ]
 
 truss_effective_widths = [ 3.0, 6.0, 7.0, 10.0, 14.0 ]
 
@@ -130,7 +132,7 @@ print ( '   W   |', end='' )
 for h in stringer_heights:
     print ( "{:6.2f}".format ( h ), end='' )
 print ()
-print ( '-------+------------------------' )
+print ( '-------+------------------------------' )
 for w in effective_widths:
     print ( "{:6.2f} |".format ( w ), end='' )
     for h in stringer_heights:
@@ -142,6 +144,8 @@ for w in effective_widths:
 print ();
 
 print ( '    STANDARD TRUSS SPAN LENGTH IN FEET' )
+print ( '   *** TRUSS BRIDGE DESIGNS MUST BE ***' )
+print ( '   ****** CHECKED BY AN ENGINEER ******' )
 print ( '                    W' )
 print ( '   H   |', end='' )
 for w in truss_effective_widths:
@@ -160,7 +164,8 @@ for h in truss_heights:
 # Compensation Multipliers
 
 print ( "\f")
-print ( "MODULUS OF ELASTICITY SPAN LENGTH MULTIPLIER" )
+print ( "STANDARD MODULUS OF ELASTICITY"
+        " SPAN LENGTH MULTIPLIER" )
 print ( "       type          E      multiplier" )
 for r in reference:
     type = r[0]
@@ -170,8 +175,8 @@ for r in reference:
             .format ( type.rjust(15), e, m ) )
 
 print ()
-print ( "TREAD LENGTH SPAN LENGTH MULTIPLIER" )
-print ( "length   muliplier" )
+print ( "STANDARD TREAD LENGTH SPAN LENGTH MULTIPLIER" )
+print ( "length   multiplier" )
 for length in tread_lengths:
     m = ( LENGTH / length ) ** ( 1.0 / 3.0 )
     print ( " {0:2d}in     {1:5.2f}"
@@ -209,7 +214,10 @@ total weight:
         and
         the number of stringers
 
-For symplicity of output, we set:
+The elastic modulus multiplier given below is different
+for the alternate method.
+
+For simplicity of output, we set:
 
 H = effective height of stringers
   = actual height of a stringer if NOT truss
@@ -228,7 +236,7 @@ print ( '   W   |', end='' )
 for h in stringer_heights:
     print ( "{:6.2f}".format ( h ), end='' )
 print ()
-print ( '-------+------------------------' )
+print ( '-------+------------------------------' )
 for w in effective_widths:
     print ( "{:6.2f} |".format ( w ), end='' )
     for h in stringer_heights:
@@ -243,6 +251,8 @@ for w in effective_widths:
 print ();
 
 print ( '    ALTERNATE TRUSS SPAN LENGTH IN FEET' )
+print ( '   *** TRUSS BRIDGE DESIGNS MUST BE ***' )
+print ( '   ****** CHECKED BY AN ENGINEER ******' )
 print ( '                    W' )
 print ( '   H   |', end='' )
 for w in truss_effective_widths:
@@ -260,3 +270,16 @@ for h in truss_heights:
         else:
             print ( "{:6.2f}".format ( l ), end='' )
     print ();
+
+# Compensation Multipliers
+
+print ( "\f" )
+print ( "ALTERNATE MODULUS OF ELASTICITY"
+        " SPAN LENGTH MULTIPLIER" )
+print ( "       type          E      multiplier" )
+for r in reference:
+    type = r[0]
+    e = r[1]
+    m = ( float( e ) / E ) ** ( 1.0 / 2.0 )
+    print ( "{0}   {1:7d}     {2:5.2f}"
+            .format ( type.rjust(15), e, m ) )
