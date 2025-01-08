@@ -4,7 +4,7 @@
 #
 # File:         span.py
 # Authors:      Bob Walton (walton@acm.org)
-# Date:         Wed Jan  8 01:43:47 AM EST 2025
+# Date:         Wed Jan  8 07:47:00 AM EST 2025
 #
 # The authors have placed this program in the public
 # domain; they make no warranty and accept no liability
@@ -112,7 +112,10 @@ stringer_heights = [ 3.5, 5.5, 7.25, 9.25, 11.25 ]
 
 effective_widths = [ 3.0, 3.5, 4.0, 4.5, 5.0, 5.5,
                      6.0, 6.5, 7.0, 7.5, 8.0, 8.5,
-                     9.0, 16.0, 24.0, 36.0, 42.0, 48.0 ]
+                     9.0, 9.5, 10.0, 10.5, 11.0, 11.5,
+                     12.0, 12.5, 13.0, 13.5, 14.0, 14.5,
+                     15.0, 15.5, 16.0, 18.0, 24.0,
+                     30.0, 36.0, 42.0, 48.0 ]
 
 truss_heights = [ 11.0, 12.75, 14.5, 14.75,
                   16.5, 16.75, 18.5, 20.5, 22.5 ]
@@ -143,6 +146,8 @@ for w in effective_widths:
     print ();
 print ();
 
+print ( "\f")
+
 print ( '    STANDARD TRUSS SPAN LENGTH IN FEET' )
 print ( '   *** TRUSS BRIDGE DESIGNS MUST BE ***' )
 print ( '   ****** CHECKED BY AN ENGINEER ******' )
@@ -163,7 +168,8 @@ for h in truss_heights:
 
 # Compensation Multipliers
 
-print ( "\f")
+print()
+
 print ( "STANDARD MODULUS OF ELASTICITY"
         " SPAN LENGTH MULTIPLIER" )
 print ( "       type          E      multiplier" )
@@ -250,6 +256,8 @@ for w in effective_widths:
     print ();
 print ();
 
+print ( "\f" )
+
 print ( '    ALTERNATE TRUSS SPAN LENGTH IN FEET' )
 print ( '   *** TRUSS BRIDGE DESIGNS MUST BE ***' )
 print ( '   ****** CHECKED BY AN ENGINEER ******' )
@@ -273,7 +281,8 @@ for h in truss_heights:
 
 # Compensation Multipliers
 
-print ( "\f" )
+print()
+
 print ( "ALTERNATE MODULUS OF ELASTICITY"
         " SPAN LENGTH MULTIPLIER" )
 print ( "       type          E      multiplier" )
