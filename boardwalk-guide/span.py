@@ -4,7 +4,7 @@
 #
 # File:         span.py
 # Authors:      Bob Walton (walton@acm.org)
-# Date:         Tue Jan  7 12:52:52 PM EST 2025
+# Date:         Wed Jan  8 12:46:07 AM EST 2025
 #
 # The authors have placed this program in the public
 # domain; they make no warranty and accept no liability
@@ -26,7 +26,7 @@ if len ( sys.argv ) > 1:
     print ( document )
     exit ( 1 )
 
-method = """
+standard_method = """
 SPAN LENGTH BY STANDARD NDS METHOD
 ---- ------ -- -------- --- ------
 
@@ -66,7 +66,7 @@ W = sum of actual widths of stringers
     (typically number of stringers times actual
      width of one stringer)
 """
-print ( method )
+print ( standard_method )
 
 # Data
 
@@ -111,7 +111,7 @@ tread_lengths = [ 24, 36, 44, 48 ]
 stringer_heights = [ 5.5, 7.25, 9.25, 11.25 ]
 
 effective_widths = [ 3.0, 3.5, 4.0, 4.5, 5.0, 5.5, 6.0, 6.5, 7.0, 7.5,
-                     8.0, 16.0, 24.0, 36.0, 42.0, 48.0 ]
+                     8.0, 8.5, 9.0, 16.0, 24.0, 36.0, 42.0, 48.0 ]
 
 truss_heights = [ 11.0, 12.75, 14.5, 14.75, 16.5, 16.75, 18.5, 20.5, 22.5 ]
 
@@ -121,8 +121,10 @@ W = N*W
 
 # Main Program
 
+# Standard Method
+
 print ( "\f" )
-print ( '       NON-TRUSS SPAN LENGTH IN FEET' )
+print ( '  STANDARD NON-TRUSS SPAN LENGTH IN FEET' )
 print ( '                     H' )
 print ( '   W   |', end='' )
 for h in stringer_heights:
@@ -139,7 +141,7 @@ for w in effective_widths:
     print ();
 print ();
 
-print ( '         TRUSS SPAN LENGTH IN FEET' )
+print ( '    STANDARD TRUSS SPAN LENGTH IN FEET' )
 print ( '                    W' )
 print ( '   H   |', end='' )
 for w in truss_effective_widths:
@@ -154,6 +156,8 @@ for h in truss_heights:
         l = f * L
         print ( "{:6.2f}".format ( l ), end='' )
     print ();
+
+# Compensation Multipliers
 
 print ( "\f")
 print ( "MODULUS OF ELASTICITY SPAN LENGTH MULTIPLIER" )
@@ -172,3 +176,87 @@ for length in tread_lengths:
     m = ( LENGTH / length ) ** ( 1.0 / 3.0 )
     print ( " {0:2d}in     {1:5.2f}"
             .format ( length, m ) )
+
+# Alternate Method
+
+print ( "\f" )
+
+alternate_method = """
+SPAN LENGTH BY ALTERNATE NDS METHOD
+---- ------ -- --------- --- ------
+
+This is the same as the Standard NDS Method, except
+that instead of holding the weight per square foot
+constant, we hold total weight constant.
+
+This method is NOT valid if the resulting span
+length is less that the reference length.  For example,
+if the reference section can hold 3 people, this method
+calculates the span that can hold 3 people for other
+parameters, but if the result is 60% of the reference
+length, only 2 people will fit.  So results less than
+the reference length are NOT given.
+
+According to the NDS equations for joists, for fixed
+total weight:
+
+    deflection/span is directly proportional to:
+        the square of the span
+    and inversely proportional to:
+        the actual width of the stringer
+        and
+        the cube of the actual height of the stringer
+        and
+        the number of stringers
+
+For symplicity of output, we set:
+
+H = effective height of stringers
+  = actual height of a stringer if NOT truss
+  = sum of actual heights of `stringers' if truss
+
+W = sum of actual widths of stringers
+    (typically number of stringers times actual
+     width of one stringer)
+"""
+print ( alternate_method )
+
+print ( "\f" )
+print ( '  ALTERNATE NON-TRUSS SPAN LENGTH IN FEET' )
+print ( '                     H' )
+print ( '   W   |', end='' )
+for h in stringer_heights:
+    print ( "{:6.2f}".format ( h ), end='' )
+print ()
+print ( '-------+------------------------' )
+for w in effective_widths:
+    print ( "{:6.2f} |".format ( w ), end='' )
+    for h in stringer_heights:
+        f =  ( ( w / W ) * ( h / H ) ** 3 ) \
+          ** (1.0 / 2.0 )
+        l = f * L
+        if l < L:
+            print ( ' -----', end='' )
+        else:
+            print ( "{:6.2f}".format ( l ), end='' )
+    print ();
+print ();
+
+print ( '    ALTERNATE TRUSS SPAN LENGTH IN FEET' )
+print ( '                    W' )
+print ( '   H   |', end='' )
+for w in truss_effective_widths:
+    print ( "{:6.2f}".format ( w ), end='' )
+print ()
+print ( '-------+------------------------------' )
+for h in truss_heights:
+    print ( "{:6.2f} |".format ( h ), end='' )
+    for w in truss_effective_widths:
+        f =  ( ( w / W ) * ( h / H ) ** 3 ) \
+          ** (1.0 / 2.0 )
+        l = f * L
+        if l < L:
+            print ( ' -----', end='' )
+        else:
+            print ( "{:6.2f}".format ( l ), end='' )
+    print ();

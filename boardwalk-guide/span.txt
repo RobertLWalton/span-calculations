@@ -51,7 +51,7 @@ H = 7.25
 
 
 
-       NON-TRUSS SPAN LENGTH IN FEET
+  STANDARD NON-TRUSS SPAN LENGTH IN FEET
                      H
    W   |  5.50  7.25  9.25 11.25
 -------+------------------------
@@ -66,13 +66,15 @@ H = 7.25
   7.00 |  8.05 10.61 13.54 16.47
   7.50 |  8.24 10.86 13.85 16.85
   8.00 |  8.42 11.09 14.15 17.21
+  8.50 |  8.59 11.32 14.44 17.57
+  9.00 |  8.75 11.54 14.72 17.90
  16.00 | 10.60 13.98 17.83 21.69
  24.00 | 12.14 16.00 20.41 24.83
  36.00 | 13.89 18.32 23.37 28.42
  42.00 | 14.63 19.28 24.60 29.92
  48.00 | 15.29 20.16 25.72 31.28
 
-         TRUSS SPAN LENGTH IN FEET
+    STANDARD TRUSS SPAN LENGTH IN FEET
                     W
    H   |  3.00  6.00  7.00 10.00 14.00
 -------+------------------------------
@@ -98,3 +100,79 @@ length   muliplier
  36in      1.00
  44in      0.94
  48in      0.91
+
+
+SPAN LENGTH BY ALTERNATE NDS METHOD
+---- ------ -- --------- --- ------
+
+This is the same as the Standard NDS Method, except
+that instead of holding the weight per square foot
+constant, we hold total weight constant.
+
+This method is NOT valid if the resulting span
+length is less that the reference length.  For example,
+if the reference section can hold 3 people, this method
+calculates the span that can hold 3 people for other
+parameters, but if the result is 60% of the reference
+length, only 2 people will fit.  So results less than
+the reference length are NOT given.
+
+According to the NDS equations for joists, for fixed
+total weight:
+
+    deflection/span is directly proportional to:
+        the square of the span
+    and inversely proportional to:
+        the actual width of the stringer
+        and
+        the cube of the actual height of the stringer
+        and
+        the number of stringers
+
+For symplicity of output, we set:
+
+H = effective height of stringers
+  = actual height of a stringer if NOT truss
+  = sum of actual heights of `stringers' if truss
+
+W = sum of actual widths of stringers
+    (typically number of stringers times actual
+     width of one stringer)
+
+
+  ALTERNATE NON-TRUSS SPAN LENGTH IN FEET
+                     H
+   W   |  5.50  7.25  9.25 11.25
+-------+------------------------
+  3.00 | -----  8.00 11.53 15.46
+  3.50 | -----  8.64 12.45 16.70
+  4.00 | -----  9.24 13.31 17.86
+  4.50 | -----  9.80 14.12 18.94
+  5.00 | ----- 10.33 14.88 19.96
+  5.50 | ----- 10.83 15.61 20.94
+  6.00 | ----- 11.31 16.30 21.87
+  6.50 | ----- 11.78 16.97 22.76
+  7.00 |  8.07 12.22 17.61 23.62
+  7.50 |  8.36 12.65 18.23 24.45
+  8.00 |  8.63 13.06 18.83 25.25
+  8.50 |  8.90 13.47 19.41 26.03
+  9.00 |  9.16 13.86 19.97 26.78
+ 16.00 | 12.21 18.48 26.63 35.71
+ 24.00 | 14.95 22.63 32.61 43.74
+ 36.00 | 18.31 27.71 39.94 53.57
+ 42.00 | 19.78 29.93 43.14 57.86
+ 48.00 | 21.14 32.00 46.12 61.85
+
+    ALTERNATE TRUSS SPAN LENGTH IN FEET
+                    W
+   H   |  3.00  6.00  7.00 10.00 14.00
+-------+------------------------------
+ 11.00 | 14.95 21.14 22.84 27.30 32.30
+ 12.75 | 18.66 26.39 28.50 34.06 40.30
+ 14.50 | 22.63 32.00 34.56 41.31 48.88
+ 14.75 | 23.22 32.83 35.46 42.38 50.15
+ 16.50 | 27.47 38.84 41.96 50.15 59.34
+ 16.75 | 28.09 39.73 42.91 51.29 60.69
+ 18.50 | 32.61 46.12 49.81 59.54 70.44
+ 20.50 | 38.04 53.79 58.10 69.45 82.17
+ 22.50 | 43.74 61.85 66.81 79.85 94.48
