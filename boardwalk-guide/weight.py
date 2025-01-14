@@ -4,7 +4,7 @@
 #
 # File:         weight.py
 # Authors:      Bob Walton (walton@acm.org)
-# Date:         Tue Jan 14 03:04:02 AM EST 2025
+# Date:         Tue Jan 14 03:29:30 AM EST 2025
 #
 # The authors have placed this program in the public
 # domain; they make no warranty and accept no liability
@@ -59,7 +59,7 @@ spans = [ [ 6, 8, 10, 12, 14, 16 ],  # page 2
 #
 WOOD = "No 1 Standard"
 CM = 0.85
-CD = 1.6
+CD = 1.6 # for 10 minute loads
 Fb = { "2x4": 1500, "4x4": 1500,
        "2x6": 1350, "4x6": 1350,
        "2x8": 1250, "4x8": 1250,
@@ -75,7 +75,7 @@ Southern Yellow Pine Reference Design Values:
 
 wood = {}
 wet service factor (CM) = {}
-load duration factor (CD) = {}
+load duration factor (CD) = {} for 10 minute loads
 bending force (Fb) = {} psi
 sheer force (Fv) = {} psi
 elastic modulus = {} psi
