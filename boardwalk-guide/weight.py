@@ -4,7 +4,7 @@
 #
 # File:         weight.py
 # Authors:      Bob Walton (walton@acm.org)
-# Date:         Tue Jan 14 01:43:29 AM EST 2025
+# Date:         Tue Jan 14 02:29:31 AM EST 2025
 #
 # The authors have placed this program in the public
 # domain; they make no warranty and accept no liability
@@ -65,10 +65,11 @@ Fb = { "2x4": 1500, "4x4": 1500,
        "2x12": 1000, "4x10": 1000 }
 Fv = 175
 E = 1600000
+Fc_perp = 565
 limit = 240
 
 reference = """
-Reference Section Values:
+Southern Yellow Pine Reference Design Values:
 
 wood = {}
 CM (wet factor ) = {}
@@ -76,10 +77,11 @@ bending force (Fb) = {} psi
 sheer force (Fv) = {} psi
 elastic modulus = {} psi
 deflection limit = 1/{}
+compression perpendicular to grain = {} psi
 
 """
 print ( reference.format
-          ( WOOD, CM, Fb, Fv, E, limit ) )
+          ( WOOD, CM, Fb, Fv, E, limit, Fc_perp ) )
 
 
 
@@ -88,20 +90,34 @@ print ( reference.format
 # Standard Method
 
 print ( "\f" )
+print ( """
+TO GET ALLOWED WEIGHT PER SQUARE FOOT,
+TAKE ALLOWED WEIGHT FOR ONE STRINGER PER FOOT,
+MULITPLY BY THE NUMBER OF STRINGERS,
+AND DIVIDE BY THE LENGTH OF THE TREAD IN FEET.
+
+BEARING LENGTH IS PROPORTIONAL TO WEIGHT PER FOOT.
+""" )
 print ( "(1) ALLOWED WEIGHT IN LBF/FT BY MOMENT"
            " CAPACITY" )
-print ( '(2) ALLOWED WEIGHT IN LBF/FT BY SHEER' )
-print ( '(3) ALLOWED WEIGHT IN LBF/FT BY DEFLECTION' )
-print ( '(4) BEARING LENGTH IN IN' )
+print ( "(2) ALLOWED WEIGHT IN LBF/FT BY SHEAR" )
+print ( "(3) ALLOWED WEIGHT IN LBF/FT BY DEFLECTION" )
+print ( "(4) MINIMUM OF ABOVE ALLOWED WEIGHTS"
+           " IN LBF/FT" )
+print ( "(5) BEARING LENGTH IN INCHES FOR"
+           " MINIMUM WEIGHT" )
 print ( '                     H' )
 print ( ' SPAN      |', end='' )
 separator = "-----------+----------------------------" \
             "--------------------"
+min_W = {}
 for d in dimensions:
     print ( "{:>8s}".format ( d ), end='' )
 print ()
 print ( separator )
 for s in spans:
+    for d in dimensions:
+        min_W[d] = math.inf
     print ( "{:6.0f} (1) |".format ( s ), end='' )
     for d in dimensions:
         w = widths[d]
@@ -111,6 +127,7 @@ for s in spans:
         M_ = ( Sx * Fb_ ) / 12  # ft lbf
         # M_ = Mload = W * ( s^2 / 6 )
         W = M_ * 6 / s**2
+        min_W[d] = min ( min_W[d], W )
         print ( "{:8.2f}".format ( W ), end='' )
     print ();
     print ( "       (2) |", end='' )
@@ -121,6 +138,7 @@ for s in spans:
         # Vload = W * ( s / 2 )
         # Fv_ = ( 3 * Vload ) / ( 2 * w * h )
         W = ( Fv_ * 2 * w * h ) / ( 3 * ( s / 2 ) )
+        min_W[d] = min ( min_W[d], W )
         print ( "{:8.2f}".format ( W ), end='' )
     print ();
     print ( "       (3) |", end='' )
@@ -131,5 +149,18 @@ for s in spans:
         #           / ( 384 * E * ( w * h^3 ) )
         W = ( 12 * 384 * E * w * h**3 ) \
           / ( limit * 5 * ( 12 * s )**3 * 12 )
+        min_W[d] = min ( min_W[d], W )
         print ( "{:8.2f}".format ( W ), end='' )
+    print ();
+    print ( "       (4) |", end='' )
+    for d in dimensions:
+        print ( "{:8.2f}".format ( min_W[d] ), end='' )
+    print ();
+    print ( "       (5) |", end='' )
+    for d in dimensions:
+        Pload = min_W[d] * s / 2
+        Fc_perp_ = CM * Fc_perp
+        area = Pload / Fc_perp
+        bearing = area / widths[d]
+        print ( "{:8.2f}".format ( area ), end='' )
     print ( ); print ( separator )
