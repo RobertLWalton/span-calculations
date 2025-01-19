@@ -1,0 +1,103 @@
+% Span Equations
+%
+% File:         equations.tex
+% Author:       Bob Walton (walton@acm.org)
+% Date:		See \date below.
+
+\documentclass[12pt]{article}
+
+\usepackage{times}
+\usepackage{makeidx}
+
+\makeindex
+
+\setlength{\oddsidemargin}{0in}
+\setlength{\evensidemargin}{0in}
+\setlength{\textwidth}{6.5in}
+\raggedbottom
+
+\setlength{\unitlength}{1in}
+
+\pagestyle{headings}
+\setlength{\parindent}{0.0in}
+\setlength{\parskip}{1ex}
+
+\newcommand{\CN}[2]%	Change Notice.
+    {\hspace*{0in}\marginpar{\sloppy \raggedright \it \footnotesize
+     $^{\mbox{#1}}$#2}}
+    % Change notice.
+
+\newcommand{\pagnote}[1]{$\,^{p\,\pageref{#1}}$}
+
+\newcommand{\EOL}{\penalty \exhyphenpenalty}
+
+\newenvironment{indpar}[1][0.3in]%
+	{\begin{list}{}%
+		     {\setlength{\itemsep}{0in}%
+		      \setlength{\topsep}{0in}%
+		      \setlength{\parsep}{1ex}%
+		      \setlength{\labelwidth}{#1}%
+		      \setlength{\leftmargin}{#1}%
+		      \addtolength{\leftmargin}{\labelsep}}%
+	 \item}%
+	{\end{list}}
+
+
+\begin{document}
+        
+\begin{center}
+\Large
+{\LARGE  \bf Boardwalk and Trail Bridge Span Calculations}
+\\[2ex]
+January 19, 2025
+\end{center}
+
+\bigskip
+
+\section{Provenence}
+
+This document contains a copy of the equations in
+
+\begin{center}
+{\em ASD/LRFD Structural Wood Design Solved Example Problems, 2005 Edition,
+Problem 6, Span of a Floor Joist}
+\end{center}
+
+This is because this document is expensive.
+
+Southern Pine Reference Design Values are obtained from the Southern
+Forest Products Association:
+
+\begin{center}
+{\tt www.southernpine.com/wp-content/uploads/2023/09/TABLE01\_L1.pdf}
+\end{center}
+
+\section{Reference Design Values}
+
+For \#1 Standard Southern Pine 2"-4" wide.
+
+$F_b$ = 1,500 psi (bending, $C_D$ and $C_M[F_b]$ apply)
+
+$F_v$ = 175 psi (shear parallel to grain, $C_D$ amd$C_M[F_v]$ apply)
+
+$E$ = 1,600,000 psi (modulus of elasticity, $C_M[E]$ applies)
+
+$F_\perp$ = 565 (compression perpendicular to grain, $C_M[F_\perp]$ applies)
+
+$C_M[F_b]$ (wet service factor)
+    = 0.85 when $F_b >$ 1,150 psi, = 1.0 when $F_b \leq$ 1,150 psi
+
+$C_M[F_v]$ (wet service factor) = 0.97
+
+$C_M[E]$ (wet service factor) = 0.9
+
+$C_M[F_\perp]$ (wet service factor) = 0.67
+
+$C_D$ (duration factor) = 1.6 (ten minutes); = 1.25 (seven days);
+                        = 0.9 (permanent - dead load)
+
+
+
+
+\end{document}
+
