@@ -144,17 +144,24 @@ $span$ in inches  = $span$ in feet $\times$
 
 \subsection{Momentum Capacity (Bending)}
 
-$F_b' = C_D \cdot C_M[F_b] \cdot F_b$ \\[0.5ex]
-$S_x = \dfrac{w\cdot h^2}{6}$ \\[0.5ex]
-$M' = S_x \cdot F_b'$ (allowable moment) \\[0.5ex]
-$M_{load} = W \cdot \dfrac{span^2}{8}$ \\[0.5ex]
+$F_b' = C_D \cdot C_M[F_b] \cdot F_b$
+\\[1.0ex]
+$S_x = \dfrac{w\cdot h^2}{6}$
+\\[1.0ex]
+$M' = S_x \cdot F_b'$ (allowable moment)
+\\[1.0ex]
+$M_{load} = W \cdot \dfrac{span^2}{8}$
+\\[1.0ex]
 $M_{load} \leq M'$
 
 \subsection{Shear}
 
-$V_{load} = W \cdot \dfrac{span}{2}$ \\[0.5ex]
-$F_v' = C_D \cdot C_M[F_v] \cdot F_v$ \\[0.5ex]
-$f_v = 3 \cdot \dfrac{V_{load}}{2 \cdot w \cdot h}$ \\[0.5ex]
+$V_{load} = W \cdot \dfrac{span}{2}$
+\\[1.0ex]
+$F_v' = C_D \cdot C_M[F_v] \cdot F_v$
+\\[1.0ex]
+$f_v = 3 \cdot \dfrac{V_{load}}{2 \cdot w \cdot h}$
+\\[1.0ex]
 $f_v \leq F_v'$
 
 \newpage
@@ -170,6 +177,17 @@ $\Delta = \dfrac{5 \cdot W_{defl} \cdot span^4}
 		~~~~~(deflection)
 \\[1.0ex]
 $Delta \leq {\mathrm{deflection~limit}} = \dfrac{span}{240}$
+
+\subsection{Bearing Length}
+
+$P_{load} = W \cdot \dfrac{span}{2}$
+\\[1.0ex]
+$F'_\perp = C_M[F_\perp] \cdot C_b \cdot F_\perp$
+\\[1.0ex]
+$Area_{bearing} = \dfrac{P_{load}}{F'_\perp}$
+\\[1.0ex]
+$Length_{bearing} = \dfrac{Area_{bearing}}{w}$
+
 
 
 
