@@ -7,6 +7,7 @@
 \documentclass[12pt]{article}
 
 \usepackage{times}
+\usepackage{amsmath}
 \usepackage{makeidx}
 
 \makeindex
@@ -49,7 +50,7 @@
 \Large
 {\LARGE  \bf Boardwalk and Trail Bridge Span Calculations}
 \\[2ex]
-January 19, 2025
+January 20, 2025
 \end{center}
 
 \bigskip
@@ -72,23 +73,29 @@ Forest Products Association:
 {\tt www.southernpine.com/wp-content/uploads/2023/09/TABLE01\_L1.pdf}
 \end{center}
 
+Acton snow load is obtained from the MA government:
+
+\begin{center}
+{\tt https://www.mass.gov/doc/16table1604pdf/download}
+\end{center}
+
 \newpage
 
 \section{Reference Design Values}
 
-For \#1 Standard Southern Pine 2"-4" wide.
+For \#1 Standard Southern Pine 2"-4" dimensional width.
 
 $F_b$ = (bending, $C_D$ and $C_M[F_b]$ apply)
-\hspace*{0.3in}\begin{tabular}[t]{rl}
+\hspace*{0.3in}\begin{tabular}[t]{rll}
 stringer \\
 dimensional \\
-height & $F_b$\\
+height & $F_b$ & $C_M[F_b]$ \\
 \hline
-2"-4" & 1,500 psi \\
-5"-6" & 1,350 psi \\
-8" & 1,250 psi \\
-10" & 1,050 psi \\
-12" & 1,000 psi \\
+2"-4" & 1,500 psi & 0.85 \\
+5"-6" & 1,350 psi & 0.85 \\
+8" & 1,250 psi & 0.85 \\
+10" & 1,050 psi & 1.0 \\
+12" & 1,000 psi & 1.0 \\
 \end{tabular}
 
 $F_v$ = 175 psi (shear parallel to grain, $C_D$ and $C_M[F_v]$ apply)
@@ -113,6 +120,45 @@ $C_D$ (duration factor) = 1.6 (ten minutes); = 1.25 (seven days);
 $C_r$ = 1.0 (repetitive member factor)
 
 $C_b$ = 1.0 (bearing area factor)
+
+deflection limit = span/240 (from MA construction code)
+
+Acton snow load = 55 psf
+
+\newpage
+\section{Equations}
+
+In the following:
+
+\begin{indpar}
+$w$ = stringer actual width in inches \\
+$h$ = stringer actual height in inches \\
+$span$ = stringer span in feet \\
+$W$ = weight on stringer in pounds force per linear foot (lbf/ft)
+\end{indpar}
+When necessary $span$ in inches is computed using
+\begin{indpar}
+$span$ in inches  = $span$ in feet $\times$
+                    $\dfrac{12~\mathrm inches}{1~\mathrm foot}$
+\end{indpar}
+
+\subsection{Momentum Capacity (Bending)}
+
+$F_b' = C_D \cdot C_M[F_b] \cdot F_b$ \\[0.5ex]
+$S_x = \dfrac{w\cdot h^2}{6}$ \\[0.5ex]
+$M' = S_x \cdot F_b'$ (allowable moment) \\[0.5ex]
+$M_{load} = W \cdot \dfrac{span^2}{8}$ \\[0.5ex]
+$M_{load} \leq M'$
+
+\subsection{Shear}
+
+$V_{load} = W \cdot \dfrac{span}{2}$ \\[0.5ex]
+$F_v' = C_D \cdot C_M[F_v] \cdot F_v$ \\[0.5ex]
+$f_v = 3 \cdot \dfrac{V_{load}}{2 \cdot w \cdot h}$ \\[0.5ex]
+$f_v \leq F_v'$
+
+
+
 
 
 \end{document}
