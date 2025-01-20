@@ -139,7 +139,7 @@ $W$ = weight on stringer in pounds force per linear foot (lbf/ft)
 When necessary $span$ in inches is computed using
 \begin{indpar}
 $span$ in inches  = $span$ in feet $\times$
-                    $\dfrac{12~\mathrm inches}{1~\mathrm foot}$
+                    $\dfrac{12~\mathrm{inches}}{1~\mathrm{foot}}$
 \end{indpar}
 
 \subsection{Momentum Capacity (Bending)}
@@ -157,6 +157,19 @@ $F_v' = C_D \cdot C_M[F_v] \cdot F_v$ \\[0.5ex]
 $f_v = 3 \cdot \dfrac{V_{load}}{2 \cdot w \cdot h}$ \\[0.5ex]
 $f_v \leq F_v'$
 
+\newpage
+
+\subsection{Deflection}
+
+$E' = C_M[E] \cdot E$
+\\[1.0ex]
+$W_{defl} = 1.5 \cdot W_{\mathrm{dead~load}} + W_{\mathrm{live~load}}$
+\\[1.0ex]
+$\Delta = \dfrac{5 \cdot W_{defl} \cdot span^4}
+                {384 \cdot E' \cdot \dfrac{w \cdot h^3}{12}}$
+		~~~~~(deflection)
+\\[1.0ex]
+$Delta \leq {\mathrm{deflection~limit}} = \dfrac{span}{240}$
 
 
 
