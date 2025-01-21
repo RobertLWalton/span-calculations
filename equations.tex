@@ -51,6 +51,8 @@
 {\LARGE  \bf Boardwalk and Trail Bridge Span Calculations}
 \\[2ex]
 January 20, 2025
+\\
+{\tt walton@acm.org}
 \end{center}
 
 \bigskip
@@ -64,7 +66,7 @@ This document contains a copy of the equations in
 Problem 6, Span of a Floor Joist}
 \end{center}
 
-This is because this document is expensive.
+This is because this document is a bit expensive and not available on the web.
 
 Southern Pine Reference Design Values are obtained from the Southern
 Forest Products Association:
@@ -102,8 +104,8 @@ $F_v$ = 175 psi (shear parallel to grain, $C_D$ and $C_M[F_v]$ apply)
 
 $E$ = 1,600,000 psi (modulus of elasticity, $C_M[E]$ applies)
 
-$F_\perp$ = 565 (compression perpendicular to grain, $C_M[F_\perp]$ and $C_b$
-                 apply)
+$F_{c\perp}$ = 565 psi (compression perpendicular to grain,
+    $C_M[F_{c\perp}]$ applies)
 
 $C_M[F_b]$ (wet service factor)
     = 0.85 when $F_b >$ 1,150 psi, = 1.0 when $F_b \leq$ 1,150 psi
@@ -112,18 +114,18 @@ $C_M[F_v]$ (wet service factor) = 0.97
 
 $C_M[E]$ (wet service factor) = 0.9
 
-$C_M[F_\perp]$ (wet service factor) = 0.67
+$C_M[F_{c\perp}]$ (wet service factor) = 0.67
 
 $C_D$ (duration factor) = 1.6 (ten minutes); = 1.25 (seven days);
                         = 0.9 (permanent - dead load)
 
-$C_r$ = 1.0 (repetitive member factor)
-
-$C_b$ = 1.0 (bearing area factor)
+$C_t$, $C_L$, $C_F$, $C_{fu}$, $C_i$, $C_r$, $C_b$ = 1.0
 
 deflection limit = span/240 (from MA construction code)
 
-Acton snow load = 55 psf
+design bearing length = 1.5 in  (from boardwalk construction)
+
+Acton snow load = 55 psf  (from MA government table)
 
 \newpage
 \section{Equations}
@@ -182,11 +184,13 @@ $Delta \leq {\mathrm{deflection~limit}} = \dfrac{span}{240}$
 
 $P_{load} = W \cdot \dfrac{span}{2}$
 \\[1.0ex]
-$F'_\perp = C_M[F_\perp] \cdot C_b \cdot F_\perp$
+$F'_{c\perp} = C_M[F_{c\perp}] \cdot C_b \cdot F_{c\perp}$
 \\[1.0ex]
-$Area_{bearing} = \dfrac{P_{load}}{F'_\perp}$
+$Area_{bearing} = \dfrac{P_{load}}{F'_{c\perp}}$
 \\[1.0ex]
 $Length_{bearing} = \dfrac{Area_{bearing}}{w}$
+\\[1.0ex]
+design bearing length $\geq Length_{bearing}$
 
 
 
