@@ -4,7 +4,7 @@
 #
 # File:         weight.py
 # Authors:      Bob Walton (walton@acm.org)
-# Date:         Tue Jan 14 03:29:30 AM EST 2025
+# Date:         Tue Jan 21 01:56:38 AM EST 2025
 #
 # The authors have placed this program in the public
 # domain; they make no warranty and accept no liability
@@ -57,34 +57,37 @@ spans = [ [ 6, 8, 10, 12, 14, 16 ],  # page 2
 
 # Design Reference Values
 #
-WOOD = "No 1 Standard"
-CM = 0.85
+WOOD = "No 1 Standard Southern Pine"
+CM_Fb = 0.85  # for Fb > 1,150 psi
+CM_Fv = 0.97
+CM_E = 0.9
+CM_Fcperp = 0.67
 CD = 1.6 # for 10 minute loads
-Fb = { "2x4": 1500, "4x4": 1500,
-       "2x6": 1350, "4x6": 1350,
-       "2x8": 1250, "4x8": 1250,
+Fb = { "2x4": CM_Fb * 1500, "4x4": CM_Fb * 1500,
+       "2x6": CM_Fb * 1350, "4x6": CM_Fb * 1350,
+       "2x8": CM_Fb * 1250, "4x8": CM_Fb * 1250,
        "2x10": 1050, "4x10": 1050,
        "2x12": 1000, "4x10": 1000 }
+       # CM_Fb included
 Fv = 175
 E = 1600000
 Fc_perp = 565
 limit = 240
+bearing = 1.5 # inches design bearing
 
 reference = """
 Southern Yellow Pine Reference Design Values:
 
 wood = {}
-wet service factor (CM) = {}
 load duration factor (CD) = {} for 10 minute loads
-bending force (Fb) = {} psi
-sheer force (Fv) = {} psi
-elastic modulus = {} psi
-deflection limit = 1/{}
-compression perpendicular to grain = {} psi
+    Possible Values:    1.6  for ten minutes
+                        1.25 for seven days
+                        0.9  for dead load
+deflection limit = span/{}
+defined bearing length = {} inches
 
 """
-print ( reference.format
-          ( WOOD, CM, CD, Fb, Fv, E, limit, Fc_perp ) )
+print ( reference.format ( WOOD, CD, limit, bearing ) )
 
 
 
@@ -97,17 +100,23 @@ TO GET ALLOWED WEIGHT PER SQUARE FOOT,
 TAKE ALLOWED WEIGHT FOR ONE STRINGER PER FOOT,
 MULITPLY BY THE NUMBER OF STRINGERS,
 AND DIVIDE BY THE LENGTH OF THE TREAD IN FEET.
-
-BEARING LENGTH IS PROPORTIONAL TO WEIGHT PER FOOT.
 """ )
 print ( "(1) ALLOWED WEIGHT IN LBF/FT BY MOMENT"
            " CAPACITY" )
+print ( "    (might not apply to our"
+           " boardwalks and bridges)" )
 print ( "(2) ALLOWED WEIGHT IN LBF/FT BY SHEAR" )
 print ( "(3) ALLOWED WEIGHT IN LBF/FT BY DEFLECTION" )
-print ( "(4) MINIMUM OF ABOVE ALLOWED WEIGHTS"
+print ( "(4) ALLOWED WEIGHT IN LBF/FT FOR 1.5 INCH"
+           " BEARING" )
+print ( "(5) MINIMUM OF ABOVE ALLOWED WEIGHTS"
            " IN LBF/FT" )
-print ( "(5) BEARING LENGTH IN INCHES FOR"
-           " MINIMUM WEIGHT" )
+print ()
+print ( """
+Allowable weights (1) and (2) are proportional to CD.
+Allowable weight (4) is proportional to
+                     designed bearing length.
+""" )
 separator = "-----------+----------------------------" \
             "--------------------"
 min_W = {}
@@ -125,11 +134,11 @@ for slist in spans:
         for d in dimensions:
             w = widths[d]
             h = heights[d]
-            Fb_ = CM * CD * Fb[d]  # psi
+            Fb_ = CD * Fb[d]  # psi, CM builtin to Fb[d]
             Sx = ( w * h ** 2 ) / 6  # in^3
             M_ = ( Sx * Fb_ ) / 12  # ft lbf
-            # M_ = Mload = W * ( s^2 / 6 )
-            W = M_ * 6 / s**2
+            # M_ = Mload = W * ( s^2 / 8 )
+            W = M_ * 8 / s**2
             min_W[d] = min ( min_W[d], W )
             print ( "{:8.2f}".format ( W ), end='' )
         print ();
@@ -137,7 +146,7 @@ for slist in spans:
         for d in dimensions:
             w = widths[d]
             h = heights[d]
-            Fv_ = CM * CD * Fv
+            Fv_ = CM_Fv * CD * Fv
             # Vload = W * ( s / 2 )
             # Fv_ = ( 3 * Vload ) / ( 2 * w * h )
             W = ( Fv_ * 2 * w * h ) / ( 3 * ( s / 2 ) )
@@ -148,23 +157,28 @@ for slist in spans:
         for d in dimensions:
             w = widths[d]
             h = heights[d]
+            E_ = CM_E * E
             # 1 / limit = ( 5 * W * s^3 * 12 )
-            #           / ( 384 * E * ( w * h^3 ) )
-            W = ( 12 * 384 * E * w * h**3 ) \
+            #           / ( 384 * E_ * ( w * h^3 ) )
+            W = ( 12 * 384 * E_ * w * h**3 ) \
               / ( limit * 5 * ( 12 * s )**3 * 12 )
             min_W[d] = min ( min_W[d], W )
             print ( "{:8.2f}".format ( W ), end='' )
         print ();
         print ( "       (4) |", end='' )
         for d in dimensions:
-            print ( "{:8.2f}".format ( min_W[d] ),
-                    end='' )
-        print ();
+            w = widths[d]
+            Fc_perp_ = CM_Fcperp * Fc_perp
+            # Pload = W * s / 2
+            # area = Pload / Fc_perp_
+            # bearing = area / w
+            #         = W * s / ( 2 * Fc_perp_ * w )
+            W = bearing * 2 * Fc_perp_ * w / s
+            min_W[d] = min ( min_W[d], W )
+            print ( "{:8.2f}".format ( W ), end='' )
+        print ( );
         print ( "       (5) |", end='' )
         for d in dimensions:
-            Pload = min_W[d] * s / 2
-            Fc_perp_ = CM * Fc_perp
-            area = Pload / Fc_perp
-            bearing = area / widths[d]
-            print ( "{:8.2f}".format ( area ), end='' )
-        print ( ); print ( separator )
+            print ( "{:8.2f}".format ( min_W[d] ),
+                    end='' )
+        print (); print ( separator )
