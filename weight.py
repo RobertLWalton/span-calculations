@@ -4,7 +4,7 @@
 #
 # File:         weight.py
 # Authors:      Bob Walton (walton@acm.org)
-# Date:         Tue Jan 21 01:56:38 AM EST 2025
+# Date:         Thu Jan 23 11:46:02 PM EST 2025
 #
 # The authors have placed this program in the public
 # domain; they make no warranty and accept no liability
@@ -103,8 +103,6 @@ AND DIVIDE BY THE LENGTH OF THE TREAD IN FEET.
 """ )
 print ( "(1) ALLOWED WEIGHT IN LBF/FT BY MOMENT"
            " CAPACITY" )
-print ( "    (might not apply to our"
-           " boardwalks and bridges)" )
 print ( "(2) ALLOWED WEIGHT IN LBF/FT BY SHEAR" )
 print ( "(3) ALLOWED WEIGHT IN LBF/FT BY DEFLECTION" )
 print ( "(4) ALLOWED WEIGHT IN LBF/FT FOR 1.5 INCH"
