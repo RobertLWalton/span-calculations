@@ -4,7 +4,7 @@
 #
 # File:         weight.py
 # Authors:      Bob Walton (walton@acm.org)
-# Date:         Wed Feb  5 08:11:59 AM EST 2025
+# Date:         Wed Feb  5 01:29:00 PM EST 2025
 #
 # The authors have placed this program in the public
 # domain; they make no warranty and accept no liability
@@ -111,11 +111,13 @@ print ( "(5) MINIMUM OF ABOVE ALLOWED WEIGHTS"
            " IN LBF/FT" )
 print ()
 print ( """
-Allowable weights (1) and (2) are proportional to CD.
-Allowable weight (3) is proportional to
-                     deflection limit.
-Allowable weight (4) is proportional to
-                     design bearing length.
+Allowable
+Weight      Is Proportional To
+----  --------------------------------------------------
+(1)   stringer width, CD, 1/span-squared
+(2)   stringer width, CD, 1/span
+(3)   stringer width, deflection limit/span, 1/span-cubed
+(4)   stringer width, bearing length, 1/span
 """ )
 separator = "-----------+----------------------------" \
             "--------------------"
@@ -187,13 +189,19 @@ print ( """
 \f
 NOTES: (1) LRDF for pedestrian bridges requires
            90 lbf / sqft, deflection limit = span/360
-       (2) For two stringer boardwalk sections with
+       (2) For two-stringer boardwalk sections with
            3 ft treads, this is met by
                2x6's for 6 ft span
                2x8's for 8 ft span
                2x10's for 10 ft span
                2x12's for 12 ft span
-       (3) For 4 ft treads this is met by (2) if the
-           bearing length is increased by 1 inch
-           for 2x10's and 2x12's
+       (3) For 4 ft treads this is met by the spans
+           just given if the design bearing length is
+           increased to 2.5 inchs for 2x10's and 2x12's
+       (4) If you double the number of stringers (to 4)
+           you can increase the span by a factor of
+           the cube root of 2 = 1.26.
+       (5) If you triple the number of stringers (to 6)
+           you can increase the span by a factor of
+           the cube root of 3 = 1.44.
 """ )
