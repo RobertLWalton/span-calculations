@@ -4,7 +4,7 @@
 #
 # File:         weight.py
 # Authors:      Bob Walton (walton@acm.org)
-# Date:         Thu Jan 23 11:46:02 PM EST 2025
+# Date:         Wed Feb  5 08:11:59 AM EST 2025
 #
 # The authors have placed this program in the public
 # domain; they make no warranty and accept no liability
@@ -72,7 +72,7 @@ Fb = { "2x4": CM_Fb * 1500, "4x4": CM_Fb * 1500,
 Fv = 175
 E = 1600000
 Fc_perp = 565
-limit = 240
+limit = 360  # deflection limit = span / limit
 bearing = 1.5 # inches design bearing
 
 reference = """
@@ -84,7 +84,7 @@ load duration factor (CD) = {} for 10 minute loads
                         1.25 for seven days
                         0.9  for dead load
 deflection limit = span/{}
-defined bearing length = {} inches
+design bearing length = {} inches
 
 """
 print ( reference.format ( WOOD, CD, limit, bearing ) )
@@ -112,8 +112,10 @@ print ( "(5) MINIMUM OF ABOVE ALLOWED WEIGHTS"
 print ()
 print ( """
 Allowable weights (1) and (2) are proportional to CD.
+Allowable weight (3) is proportional to
+                     deflection limit.
 Allowable weight (4) is proportional to
-                     designed bearing length.
+                     design bearing length.
 """ )
 separator = "-----------+----------------------------" \
             "--------------------"
@@ -180,3 +182,18 @@ for slist in spans:
             print ( "{:8.2f}".format ( min_W[d] ),
                     end='' )
         print (); print ( separator )
+
+print ( """
+\f
+NOTES: (1) LRDF for pedestrian bridges requires
+           90 lbf / sqft, deflection limit = span/360
+       (2) For two stringer boardwalk sections with
+           3 ft treads, this is met by
+               2x6's for 6 ft span
+               2x8's for 8 ft span
+               2x10's for 10 ft span
+               2x12's for 12 ft span
+       (3) For 4 ft treads this is met by (2) if the
+           bearing length is increased by 1 inch
+           for 2x10's and 2x12's
+""" )
