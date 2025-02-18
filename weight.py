@@ -4,7 +4,7 @@
 #
 # File:         weight.py
 # Authors:      Bob Walton (walton@acm.org)
-# Date:         Wed Feb  5 01:29:00 PM EST 2025
+# Date:         Tue Feb 18 10:04:07 AM EST 2025
 #
 # The authors have placed this program in the public
 # domain; they make no warranty and accept no liability
@@ -51,8 +51,8 @@ heights = { "2x4":  3.5,   "4x4":  3.5,
             "2x12": 11.25, "4x10": 11.25 }
 dimensions = [ "4x4", "2x6", "4x6", "2x8",
                "2x10", "2x12" ]
-spans = [ [ 6, 8, 10, 12, 14, 16 ],  # page 2
-          [ 18, 20, 22, 24 ] ]       # page 3
+spans = [ [ 4, 6, 8, 10, 12, 14 ],     # page 2
+          [ 16, 18, 20, 22, 24, 26 ] ] # page 3
 
 
 # Design Reference Values
