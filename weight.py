@@ -4,7 +4,7 @@
 #
 # File:         weight.py
 # Authors:      Bob Walton (walton@acm.org)
-# Date:         Fri Feb 28 07:46:47 PM EST 2025
+# Date:         Mon Mar  3 08:20:43 AM EST 2025
 #
 # The authors have placed this program in the public
 # domain; they make no warranty and accept no liability
@@ -19,7 +19,7 @@ Program to compute allowed weight per linear foot and
 required bearing width of stringers with various
 spans and cross-sections.
 
-Command: python3 weithg.py
+Command: python3 weight.py
 
 """;
 
@@ -33,7 +33,7 @@ FOR EQUATIONS SEE NATIONAL DESIGN STANDARD
 ``SPAN OF FLOOR JOIST'' EXAMPLE
 ------ -- ----- ------- -------
 """
-print ( standard_method )
+print ( standard_method, end='' )
 
 # Data
 
@@ -66,7 +66,8 @@ CM_Fb = 0.85  # for Fb > 1,150 psi
 CM_Fv = 0.97
 CM_E = 0.9
 CM_Fcperp = 0.67
-CD = 1.6 # for 10 minute loads
+CD = 1.6 # for ten minutes
+SnowLoad = 55 # lb/sqft for Acton MA
 Fb = { "2x4": CM_Fb * 1500, "4x4": CM_Fb * 1500,
        "2x6": CM_Fb * 1350, "4x6": CM_Fb * 1350,
        "2x8": CM_Fb * 1250, "4x8": CM_Fb * 1250,
@@ -83,15 +84,18 @@ reference = """
 Southern Yellow Pine Reference Design Values:
 
 wood = {}
-load duration factor (CD) = {} for 10 minute loads
+snow load = {} lb/sqft for Acton MA
+load duration factor (CD) = {} for ten minutes
     Possible Values:    1.6  for ten minutes
                         1.25 for seven days
+                        1.15 for two months (snow load)
                         0.9  for dead load
 deflection limit = span/{}
 design bearing length = {} inches
-
 """
-print ( reference.format ( WOOD, CD, limit, bearing ) )
+print ( reference.format
+            ( WOOD, SnowLoad, CD, limit, bearing ),
+        end='' )
 
 
 
@@ -111,9 +115,6 @@ print ( "(2) ALLOWED WEIGHT IN LBF/FT BY SHEAR" )
 print ( "(3) ALLOWED WEIGHT IN LBF/FT BY DEFLECTION" )
 print ( "(4) ALLOWED WEIGHT IN LBF/FT FOR 1.5 INCH"
            " BEARING" )
-print ( "(5) MINIMUM OF ABOVE ALLOWED WEIGHTS"
-           " IN LBF/FT" )
-print ()
 print ( """
 Allowable
 Weight      Is Proportional To
@@ -130,33 +131,37 @@ NOTES: (1) LRDF for pedestrian bridges requires
            90 lbf / sqft, deflection limit = span/360
        (2) Bearing should be increased to
                2 inches for 2x10's
-               2.25 inches for 2x12's
-       (3) For two-stringer boardwalk sections with
+               2.5 inches for 2x12's
+       (3) Loads (1) and (2) must be multiplied by
+           CD-two-months/CD-10-minutes = 1.15/1.6 = 71%
+           and accommodate snow load.  For 55 lb/sqft
+           with 4 ft treads and 2 stringers, this load
+           per string is 110 lb/ft = 71% * 155 lb/ft.
+       (4) For two-stringer boardwalk sections with
            3 ft or 4 ft treads, this is met by
                2x4's for 4 ft span **
                2x6's for 6 ft span
                2x8's for 8 ft span
                2x10's for 10 ft span
                2x12's for 12 ft span
-               4x4's for 5.8 ft span **
+               4x4's for 5 ft span
                4x6's for 8 ft span
                4x8's for 10 ft span
                4x10's for 13.5 ft span
                4x12's for 16 ft span
            (** but NOT for 4 ft treads )
-       (3) If you add a middle stringer (to 3 total)
+       (5) If you add a middle stringer (to 3 total)
            you can increase the span by a factor of
            the cube root of 1.5 = 1.14.
-       (4) If you double the number of stringers (to 4)
+       (6) If you double the number of stringers (to 4)
            you can increase the span by a factor of
            the cube root of 2 = 1.26.
-       (5) If you triple the number of stringers (to 6)
+       (7) If you triple the number of stringers (to 6)
            you can increase the span by a factor of
            the cube root of 3 = 1.44.
 """ )
 separator = "-----------+----------------------------" \
             "--------------------"
-min_W = {}
 for dlist in dimensions:
     for slist in spans:
         print ( "\f" )
@@ -166,8 +171,6 @@ for dlist in dimensions:
         print ()
         print ( separator )
         for s in slist:
-            for d in dlist:
-                min_W[d] = math.inf
             print ( "{:6.0f} (1) |".format ( s ),
                     end='' )
             for d in dlist:
@@ -179,7 +182,6 @@ for dlist in dimensions:
                 M_ = ( Sx * Fb_ ) / 12  # ft lbf
                 # M_ = Mload = W * ( s^2 / 8 )
                 W = M_ * 8 / s**2
-                min_W[d] = min ( min_W[d], W )
                 print ( "{:8.2f}".format ( W ), end='' )
             print ();
             print ( "       (2) |", end='' )
@@ -191,7 +193,6 @@ for dlist in dimensions:
                 # Fv_ = ( 3 * Vload ) / ( 2 * w * h )
                 W = ( Fv_ * 2 * w * h ) \
                   / ( 3 * ( s / 2 ) )
-                min_W[d] = min ( min_W[d], W )
                 print ( "{:8.2f}".format ( W ), end='' )
             print ();
             print ( "       (3) |", end='' )
@@ -203,7 +204,6 @@ for dlist in dimensions:
                 #           / ( 384 * E_ * ( w * h^3 ) )
                 W = ( 12 * 384 * E_ * w * h**3 ) \
                   / ( limit * 5 * ( 12 * s )**3 * 12 )
-                min_W[d] = min ( min_W[d], W )
                 print ( "{:8.2f}".format ( W ), end='' )
             print ();
             print ( "       (4) |", end='' )
@@ -215,11 +215,5 @@ for dlist in dimensions:
                 # bearing = area / w
                 #         = W * s / ( 2 * Fc_perp_ * w )
                 W = bearing * 2 * Fc_perp_ * w / s
-                min_W[d] = min ( min_W[d], W )
                 print ( "{:8.2f}".format ( W ), end='' )
-            print ( );
-            print ( "       (5) |", end='' )
-            for d in dlist:
-                print ( "{:8.2f}".format ( min_W[d] ),
-                        end='' )
             print (); print ( separator )
