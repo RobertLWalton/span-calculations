@@ -4,7 +4,7 @@
 #
 # File:         weight.py
 # Authors:      Bob Walton (walton@acm.org)
-# Date:         Mon Mar  3 08:20:43 AM EST 2025
+# Date:         Tue Mar 18 02:55:25 AM EDT 2025
 #
 # The authors have placed this program in the public
 # domain; they make no warranty and accept no liability
@@ -134,7 +134,7 @@ NOTES: (1) LRDF for pedestrian bridges requires
                2.5 inches for 2x12's
        (3) Loads (1) and (2) must be multiplied by
            CD-two-months/CD-10-minutes = 1.15/1.6 = 71%
-           and accommodate snow load.  For 55 lb/sqft
+           to accommodate snow load.  For 55 lb/sqft
            with 4 ft treads and 2 stringers, this load
            per string is 110 lb/ft = 71% * 155 lb/ft.
        (4) For two-stringer boardwalk sections with
