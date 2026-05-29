@@ -4,7 +4,7 @@
 #
 # File:         weight.py
 # Authors:      Bob Walton (walton@acm.org)
-# Date:         Tue Mar 18 02:55:25 AM EDT 2025
+# Date:         Fri May 29 06:53:39 AM EDT 2026
 #
 # The authors have placed this program in the public
 # domain; they make no warranty and accept no liability
@@ -49,15 +49,24 @@ heights = { "2x4":  3.5,   "4x4":  3.5,
             "2x8":  7.25,  "4x8":  7.25,
             "2x10": 9.25,  "4x10": 9.25,
             "2x12": 11.25, "4x12": 11.25 }
-dimensions = [
-    [ "2x4", "2x6", "2x8", "2x10", "2x12" ], # page group 1
-    [ "4x4", "4x6", "4x8", "4x10", "4x12" ]  # page group 2
+pages = [  # [ dimensions, spans ]
+    [ [ "2x4", "2x6", "2x8", "2x10", "2x12" ],
+      [ 4, 5, 6, 7, 8, 9 ] ],
+    [ [ "2x4", "2x6", "2x8", "2x10", "2x12" ],
+      [ 10, 11, 12, 13, 14, 15 ] ],
+    [ [ "2x4", "2x6", "2x8", "2x10", "2x12" ],
+      [ 16, 17, 18, 19, 20, 21 ] ],
+    [ [ "2x4", "2x6", "2x8", "2x10", "2x12" ],
+      [ 22, 23, 24, 25, 26, 27 ] ],
+    [ [ "4x4", "4x6", "4x8", "4x10", "4x12" ],
+      [ 4, 5, 6, 7, 8, 9 ] ],
+    [ [ "4x4", "4x6", "4x8", "4x10", "4x12" ],
+      [ 10, 11, 12, 13, 14, 15 ] ],
+    [ [ "4x4", "4x6", "4x8", "4x10", "4x12" ],
+      [ 16, 17, 18, 19, 20, 21 ] ],
+    [ [ "4x4", "4x6", "4x8", "4x10", "4x12" ],
+      [ 22, 23, 24, 25, 26, 27 ] ]
 ]
-spans = [ [ 4, 5, 6, 7, 8, 9 ],         # subpage 1
-          [ 10, 11, 12, 13, 14, 15 ],   # subpage 2
-          [ 16, 17, 18, 19, 20, 21 ],   # subpage 3
-          [ 22, 23, 24, 25, 26, 27 ] ]  # subpage 4
-
 
 # Design Reference Values
 #
@@ -162,58 +171,59 @@ NOTES: (1) LRDF for pedestrian bridges requires
 """ )
 separator = "-----------+----------------------------" \
             "--------------------"
-for dlist in dimensions:
-    for slist in spans:
-        print ( "\f" )
-        print ( ' SPAN FT   |', end='' )
+for pair in pages:
+    dlist = pair[0]
+    slist = pair[1]
+    print ( "\f" )
+    print ( ' SPAN FT   |', end='' )
+    for d in dlist:
+        print ( "{:>8s}".format ( d ), end='' )
+    print ()
+    print ( separator )
+    for s in slist:
+        print ( "{:6.0f} (1) |".format ( s ),
+                end='' )
         for d in dlist:
-            print ( "{:>8s}".format ( d ), end='' )
-        print ()
-        print ( separator )
-        for s in slist:
-            print ( "{:6.0f} (1) |".format ( s ),
-                    end='' )
-            for d in dlist:
-                w = widths[d]
-                h = heights[d]
-                Fb_ = CD * Fb[d] 
-                    # psi, CM builtin to Fb[d]
-                Sx = ( w * h ** 2 ) / 6  # in^3
-                M_ = ( Sx * Fb_ ) / 12  # ft lbf
-                # M_ = Mload = W * ( s^2 / 8 )
-                W = M_ * 8 / s**2
-                print ( "{:8.2f}".format ( W ), end='' )
-            print ();
-            print ( "       (2) |", end='' )
-            for d in dlist:
-                w = widths[d]
-                h = heights[d]
-                Fv_ = CM_Fv * CD * Fv
-                # Vload = W * ( s / 2 )
-                # Fv_ = ( 3 * Vload ) / ( 2 * w * h )
-                W = ( Fv_ * 2 * w * h ) \
-                  / ( 3 * ( s / 2 ) )
-                print ( "{:8.2f}".format ( W ), end='' )
-            print ();
-            print ( "       (3) |", end='' )
-            for d in dlist:
-                w = widths[d]
-                h = heights[d]
-                E_ = CM_E * E
-                # 1 / limit = ( 5 * W * s^3 * 12 )
-                #           / ( 384 * E_ * ( w * h^3 ) )
-                W = ( 12 * 384 * E_ * w * h**3 ) \
-                  / ( limit * 5 * ( 12 * s )**3 * 12 )
-                print ( "{:8.2f}".format ( W ), end='' )
-            print ();
-            print ( "       (4) |", end='' )
-            for d in dlist:
-                w = widths[d]
-                Fc_perp_ = CM_Fcperp * Fc_perp
-                # Pload = W * s / 2
-                # area = Pload / Fc_perp_
-                # bearing = area / w
-                #         = W * s / ( 2 * Fc_perp_ * w )
-                W = bearing * 2 * Fc_perp_ * w / s
-                print ( "{:8.2f}".format ( W ), end='' )
-            print (); print ( separator )
+            w = widths[d]
+            h = heights[d]
+            Fb_ = CD * Fb[d] 
+                # psi, CM builtin to Fb[d]
+            Sx = ( w * h ** 2 ) / 6  # in^3
+            M_ = ( Sx * Fb_ ) / 12  # ft lbf
+            # M_ = Mload = W * ( s^2 / 8 )
+            W = M_ * 8 / s**2
+            print ( "{:8.2f}".format ( W ), end='' )
+        print ();
+        print ( "       (2) |", end='' )
+        for d in dlist:
+            w = widths[d]
+            h = heights[d]
+            Fv_ = CM_Fv * CD * Fv
+            # Vload = W * ( s / 2 )
+            # Fv_ = ( 3 * Vload ) / ( 2 * w * h )
+            W = ( Fv_ * 2 * w * h ) \
+              / ( 3 * ( s / 2 ) )
+            print ( "{:8.2f}".format ( W ), end='' )
+        print ();
+        print ( "       (3) |", end='' )
+        for d in dlist:
+            w = widths[d]
+            h = heights[d]
+            E_ = CM_E * E
+            # 1 / limit = ( 5 * W * s^3 * 12 )
+            #           / ( 384 * E_ * ( w * h^3 ) )
+            W = ( 12 * 384 * E_ * w * h**3 ) \
+              / ( limit * 5 * ( 12 * s )**3 * 12 )
+            print ( "{:8.2f}".format ( W ), end='' )
+        print ();
+        print ( "       (4) |", end='' )
+        for d in dlist:
+            w = widths[d]
+            Fc_perp_ = CM_Fcperp * Fc_perp
+            # Pload = W * s / 2
+            # area = Pload / Fc_perp_
+            # bearing = area / w
+            #         = W * s / ( 2 * Fc_perp_ * w )
+            W = bearing * 2 * Fc_perp_ * w / s
+            print ( "{:8.2f}".format ( W ), end='' )
+        print (); print ( separator )
