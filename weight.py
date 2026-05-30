@@ -4,7 +4,7 @@
 #
 # File:         weight.py
 # Authors:      Bob Walton (walton@acm.org)
-# Date:         Fri May 29 01:54:25 PM EDT 2026
+# Date:         Sat May 30 07:00:22 AM EDT 2026
 #
 # The authors have placed this program in the public
 # domain; they make no warranty and accept no liability
@@ -77,7 +77,7 @@ pages = [  # [ dimensions, spans ]
     [ [ "4x4", "4x6", "4x8", "4x10", "4x12" ],
       [ 22, 23, 24, 25, 26, 27 ] ],
     [ [ "4x2", "6x2", "8x2", "10x2", "12x2" ],
-      [ 2.0, 2.5, 3.0, 3.5, 4.0 ] ],
+      [ 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5 ] ],
     [ [ "6x4", "8x4", "10x4", "12x4" ],
       [ 2.0, 2.5, 3.0, 8.0, 9.0, 9.5, 10.0 ] ]
 ]
